@@ -6,7 +6,7 @@ import os
 from playhouse.db_url import connect
 
 # DATABASE = SqliteDatabase('youcoin.sqlite')
-DATABASE = connect(os.environ.get('https://dashboard.heroku.com/apps/youcoin-flask'))
+DATABASE = connect(os.environ.get('DATABASE_URL'))
 
 class User(UserMixin, Model):
     username = CharField(unique=True) 
