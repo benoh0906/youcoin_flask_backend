@@ -20,12 +20,35 @@ def rank_youcoin():
     return jsonify(data=youcoins, status={"code":200,"message":"success"})
 
 
+#delete youcoin
+@api.route('/delete/<id>', methods=["DELETE"])
+def delete_youcoin(id):
+    
+    print('hit delete route')
+    # print(type(models.User.get(models.User.id==1)),'<-user type') #model
+    coin = model_to_dict(models.Youcoin.get(models.Youcoin.id==id))
+    print(coin,"<-coin")
+    coinUser=coin['user']['id']
+    print(coinUser,'<-coinUser')
+    coinProfit=coin['profit']
+    user = model_to_dict(models.User.get(models.User.id==coinUser))
+
+    profit = user["profit"]
+    
+    profitUpdate = models.User.update(profit=profit+coinProfit).where((models.User.id == coinUser))
+    profitUpdate.execute()
+
+    query = models.Youcoin.delete().where(models.Youcoin.id == id)
+    query.execute()
+
+    return jsonify(data='Success', status={"code":200, "message":"Success"})
 
 #list youcoins
 @api.route('/<id>', methods=["GET"])
 def get_all_youcoins(id):
 
-    key = "AIzaSyBmsZuI1MRlhGgXLdKBFdAlNXtZoicwDBs"
+    # key = "AIzaSyDMk98WlLVm6XIF8T3jNBQJPLJ-Dsi7vAQ"
+    key = "AIzaSyCYa2InAdv01XHo-PTo50d3ineLBHeZEqs"
     
     try:
         youcoins=[model_to_dict(youcoin) for youcoin in models.Youcoin.select().where(models.Youcoin.user == int(id))]
@@ -39,14 +62,15 @@ def get_all_youcoins(id):
             query = models.Youcoin.update(currentNum=int(subs), profit=(int(subs)-dataSN)).where((models.Youcoin.user == int(id)) & (models.Youcoin.id==dataId))
             query.execute()
 
-            models.Stat.create(youcoin=dataId, currentSubs=subs)
-            stat=[model_to_dict(stat) for stat in models.Stat.select()]
-            print(len(stat),"<-num of stat")
+            # models.Stat.create(youcoin=dataId, currentSubs=subs)
+            # stat=[model_to_dict(stat) for stat in models.Stat.select()]
+            # print(len(stat),"<-num of stat")
         
         return jsonify(data=youcoins,status={"code":200,"message":"success"})
 
     except models.DoesNotExist:
         return jsonify(data={}, status={"code":401, "message":"There was an error getting the resource"})
+
 
 #show youcoin
 @api.route('/<id>',methods = ["GET"])
@@ -61,13 +85,20 @@ def create_youcoins():
     
     user = models.User.get(models.User.id== payload['user'])
     
-    key = "AIzaSyBmsZuI1MRlhGgXLdKBFdAlNXtZoicwDBs"
+    # key = "AIzaSyDMk98WlLVm6XIF8T3jNBQJPLJ-Dsi7vAQ"
+    key = "AIzaSyCYa2InAdv01XHo-PTo50d3ineLBHeZEqs"
     url=payload["channelUrl"]
     
     for i in range(len(url)):
         if url[i:i+8]=="channel/":
             name=url[i+8:]
 
+        elif url[i:i+5]=="user/":
+            userFind=url[i+5:]
+            subdata= urllib.request.urlopen("https://www.googleapis.com/youtube/v3/channels?part=statistics&forUsername="+userFind+"&key="+key).read()
+            name=json.loads(subdata)["items"][0]["id"]
+            print(name,"user name")
+    
     data= urllib.request.urlopen("https://www.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id="+name+"&key="+key).read()
     subs = json.loads(data)["items"][0]["statistics"]["subscriberCount"]
     title = json.loads(data)["items"][0]["snippet"]["title"]
@@ -87,26 +118,3 @@ def create_youcoins():
     you_dict = model_to_dict(youcoin)
 
     return jsonify(data = you_dict, status={"code":281,"message":"Success"})
-
-#delete youcoin
-@api.route('/<id>', methods=["DELETE"])
-def delete_youcoin(id):
-    
-
-    # print(type(models.User.get(models.User.id==1)),'<-user type') #model
-    coin = model_to_dict(models.Youcoin.get(models.Youcoin.id==id))
-    print(coin,"<-coin")
-    coinUser=coin['user']['id']
-    print(coinUser,'<-coinUser')
-    coinProfit=coin['profit']
-    user = model_to_dict(models.User.get(models.User.id==coinUser))
-
-    profit = user["profit"]
-    
-    profitUpdate = models.User.update(profit=profit+coinProfit).where((models.User.id == coinUser))
-    profitUpdate.execute()
-
-    query = models.Youcoin.delete().where(models.Youcoin.id == id)
-    query.execute()
-
-    return jsonify(data='resources successfully deleted', status={"code":200, "message":"deleted"})

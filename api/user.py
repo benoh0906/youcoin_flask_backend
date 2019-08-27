@@ -12,6 +12,21 @@ from playhouse.shortcuts import model_to_dict
 
 user = Blueprint("users", "user", url_prefix="/user")
 
+#rank user
+@user.route('/rank', methods = ["GET"])
+def rank_user():
+
+    users=[model_to_dict(userRank) for userRank in models.User.select().order_by(models.User.profit.desc()).limit(5)]
+
+    return jsonify(data=users, status={"code":200,"message":"success"})
+
+#update profit
+@user.route('/profit/<id>', methods = ["GET"])
+def update_profit(id):
+    profits=models.User.get_by_id(id).profit
+    return jsonify(data=profits,status={"code":200,"message":"success"})
+
+
 #register
 @user.route("/register", methods=["POST"])
 def register():
@@ -60,31 +75,12 @@ def login():
 
 
 
-#edit
-@user.route('/<id>', methods=["PUT"])
-def edit_user(id):
-    print('hit edit route')
-    payload = request.get_json()
-    
-    try:
-        user = models.User.get(models.User.id==id)
-        user_dict = model_to_dict(user)
-        if(check_password_hash(user_dict['password'],payload['password'])):
-            query= models.User.update(email=payload["email"]).where(models.User.id == id)
-            query.execute()
-            
-            updated_user = models.User.get_by_id(id)
-
-            return jsonify(data=model_to_dict(updated_user), status={"code":200,"message":"Success"})
-        else:
-            return jsonify(data={}, status={"code": 401, "message": "Wrong password"})
-    except models.DoesNotExist:
-        return jsonify(data={}, status={"code": 401, "message": "Wrong Input"})
-
 #update password
-@user.route('/<id>/pw', methods=["PUT"])
+@user.route('/pw/<id>', methods=["PUT"])
 def edit_pw(id):
+    print("route hit pw edit")
     payload = request.get_json()
+    print(payload,"<pw payload")
     try:
         user = models.User.get(models.User.id==id)
         user_dict = model_to_dict(user)
@@ -100,6 +96,27 @@ def edit_pw(id):
             return jsonify(data={}, status={"code": 401, "message": "Invalid Input"})
     except models.DoesNotExist:
         return jsonify(data={}, status={"code": 401, "message": "Invalid Username or Password"})
+
+#edit
+@user.route('/<id>', methods=["PUT"])
+def edit_user(id):
+    print('hit edit route')
+    payload = request.get_json()
+
+    try:
+        user = models.User.get(models.User.id==id)
+        user_dict = model_to_dict(user)
+        if(check_password_hash(user_dict['password'],payload['password'])):
+            query= models.User.update(email=payload["email"]).where(models.User.id == id)
+            query.execute()
+            
+            updated_user = models.User.get_by_id(id)
+
+            return jsonify(data=model_to_dict(updated_user), status={"code":200,"message":"Success"})
+        else:
+            return jsonify(data={}, status={"code": 401, "message": "Wrong password"})
+    except models.DoesNotExist:
+        return jsonify(data={}, status={"code": 401, "message": "Wrong Input"})
 
             
 
