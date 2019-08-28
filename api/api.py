@@ -11,10 +11,7 @@ api=Blueprint('api','api',url_prefix="/api/v1")
 #rank Youcoin
 @api.route('/main', methods = ["GET"])
 def rank_youcoin():
-    # coin = models.Youcoin.select().limit(5)
-    # print(coin, type(coin),"<-coin")
-    # coin_dict = model_to_dict(coin)
-    # print(coin_dict,"<-coindict")
+
     youcoins=[model_to_dict(youcoin) for youcoin in models.Youcoin.select().order_by(models.Youcoin.profit.desc()).limit(5)]
 
     return jsonify(data=youcoins, status={"code":200,"message":"success"})
@@ -25,7 +22,6 @@ def rank_youcoin():
 def delete_youcoin(id):
     
     print('hit delete route')
-    # print(type(models.User.get(models.User.id==1)),'<-user type') #model
     coin = model_to_dict(models.Youcoin.get(models.Youcoin.id==id))
     print(coin,"<-coin")
     coinUser=coin['user']['id']
@@ -47,8 +43,8 @@ def delete_youcoin(id):
 @api.route('/<id>', methods=["GET"])
 def get_all_youcoins(id):
 
-    # key = "AIzaSyDMk98WlLVm6XIF8T3jNBQJPLJ-Dsi7vAQ"
-    key = "AIzaSyCYa2InAdv01XHo-PTo50d3ineLBHeZEqs"
+    key = "AIzaSyDMk98WlLVm6XIF8T3jNBQJPLJ-Dsi7vAQ"
+    # key = "AIzaSyCYa2InAdv01XHo-PTo50d3ineLBHeZEqs"
     
     try:
         youcoins=[model_to_dict(youcoin) for youcoin in models.Youcoin.select().where(models.Youcoin.user == int(id))]
@@ -85,8 +81,8 @@ def create_youcoins():
     
     user = models.User.get(models.User.id== payload['user'])
     
-    # key = "AIzaSyDMk98WlLVm6XIF8T3jNBQJPLJ-Dsi7vAQ"
-    key = "AIzaSyCYa2InAdv01XHo-PTo50d3ineLBHeZEqs"
+    key = "AIzaSyDMk98WlLVm6XIF8T3jNBQJPLJ-Dsi7vAQ"
+    # key = "AIzaSyCYa2InAdv01XHo-PTo50d3ineLBHeZEqs"
     url=payload["channelUrl"]
     
     for i in range(len(url)):
