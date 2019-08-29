@@ -43,9 +43,7 @@ def delete_youcoin(id):
 @api.route('/<id>', methods=["GET"])
 def get_all_youcoins(id):
 
-    key = "AIzaSyDMk98WlLVm6XIF8T3jNBQJPLJ-Dsi7vAQ"
-    # key = "AIzaSyCYa2InAdv01XHo-PTo50d3ineLBHeZEqs"
-    
+    key = 
     try:
         youcoins=[model_to_dict(youcoin) for youcoin in models.Youcoin.select().where(models.Youcoin.user == int(id))]
         for data in youcoins:
@@ -81,8 +79,7 @@ def create_youcoins():
     
     user = models.User.get(models.User.id== payload['user'])
     
-    key = "AIzaSyDMk98WlLVm6XIF8T3jNBQJPLJ-Dsi7vAQ"
-    # key = "AIzaSyCYa2InAdv01XHo-PTo50d3ineLBHeZEqs"
+    key = 
     url=payload["channelUrl"]
     
     for i in range(len(url)):
