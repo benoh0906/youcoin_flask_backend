@@ -1,13 +1,13 @@
 import models
 import urllib.request
 import json
+from config.py import api_key
 
 from flask import Blueprint, request, jsonify, g
 from playhouse.shortcuts import model_to_dict
 
 api=Blueprint('api','api',url_prefix="/api/v1")
-key = "AIzaSyASDwMd0iJ7chOkwVDTtLQr4-4zrokdwSA"
-
+key = api_key
 #rank Youcoin
 @api.route('/main', methods = ["GET"])
 def rank_youcoin():
