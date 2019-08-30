@@ -27,8 +27,8 @@ def load_user(userid):
         return None
         
 
-CORS(api, origins=['http://localhost:3000','https://youcoin-flask.herokuapp.com'], supports_credentials=True)
-CORS(user, origins=['http://localhost:3000','https://youcoin-flask.herokuapp.com'], supports_credentials=True)
+CORS(api, origins=['http://localhost:3000','https://youcoin-react.herokuapp.com'], supports_credentials=True)
+CORS(user, origins=['http://localhost:3000','https://youcoin-react.herokuapp.com'], supports_credentials=True)
 
 app.register_blueprint(user)
 app.register_blueprint(api)
