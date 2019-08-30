@@ -2,11 +2,11 @@ import models
 import urllib.request
 import json
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, g
 from playhouse.shortcuts import model_to_dict
 
 api=Blueprint('api','api',url_prefix="/api/v1")
-
+key = "AIzaSyASDwMd0iJ7chOkwVDTtLQr4-4zrokdwSA"
 
 #rank Youcoin
 @api.route('/main', methods = ["GET"])
@@ -42,8 +42,6 @@ def delete_youcoin(id):
 #list youcoins
 @api.route('/<id>', methods=["GET"])
 def get_all_youcoins(id):
-
-    key = 
     try:
         youcoins=[model_to_dict(youcoin) for youcoin in models.Youcoin.select().where(models.Youcoin.user == int(id))]
         for data in youcoins:
@@ -79,7 +77,7 @@ def create_youcoins():
     
     user = models.User.get(models.User.id== payload['user'])
     
-    key = 
+    # key = "AIzaSyASDwMd0iJ7chOkwVDTtLQr4-4zrokdwSA"
     url=payload["channelUrl"]
     
     for i in range(len(url)):

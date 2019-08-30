@@ -20,6 +20,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader 
 def load_user(userid):
+    g.token = 'AIzaSyASDwMd0iJ7chOkwVDTtLQr4-4zrokdwSA'
     try:
         return models.User.get(models.User.id == userid)
     except models.DoesNotExist:
@@ -36,6 +37,7 @@ app.register_blueprint(api)
 @app.before_request 
 def before_request():
     g.db = models.DATABASE
+
     g.db.connect()
 
 @app.after_request 
