@@ -20,7 +20,7 @@ login_manager.init_app(app)
 
 @login_manager.user_loader 
 def load_user(userid):
-    g.token = 'AIzaSyASDwMd0iJ7chOkwVDTtLQr4-4zrokdwSA'
+    # g.token = 'AIzaSyASDwMd0iJ7chOkwVDTtLQr4-4zrokdwSA'
     try:
         return models.User.get(models.User.id == userid)
     except models.DoesNotExist:

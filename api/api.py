@@ -42,7 +42,7 @@ def delete_youcoin(id):
 #list youcoins
 @api.route('/<id>', methods=["GET"])
 def get_all_youcoins(id):
-    print(g.token,"<g token")
+    # print(g.token,"<g token")
     try:
         youcoins=[model_to_dict(youcoin) for youcoin in models.Youcoin.select().where(models.Youcoin.user == int(id))]
         for data in youcoins:
