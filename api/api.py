@@ -1,7 +1,7 @@
 import models
 import urllib.request
 import json
-from config.py import api_key
+from config import api_key
 
 from flask import Blueprint, request, jsonify, g
 from playhouse.shortcuts import model_to_dict
