@@ -11,7 +11,8 @@ PORT= 8000
 
 login_manager = LoginManager()
 
-app= Flask(__name__, static_url_path="", static_folder="static")
+app= Flask(__name__, static_url_path="", static_folder="static",instance_relative_config=True)
+
 
 app.secret_key = 'RLAKJDRANDOM STRING'
 
@@ -20,7 +21,6 @@ login_manager.init_app(app)
 
 @login_manager.user_loader 
 def load_user(userid):
-    # g.token = 'AIzaSyASDwMd0iJ7chOkwVDTtLQr4-4zrokdwSA'
     try:
         return models.User.get(models.User.id == userid)
     except models.DoesNotExist:
