@@ -12,7 +12,7 @@
 * [Contact](#contact)
 
 ## General info
-The act of subscribing in YouTube carries important meanings to users. By subscribing specific YouTubers, users feel like they are supporting them which they take pride of. When the YouTuber becomes more and more influencial after you become the fan of him/her, users feel they have insights.
+The act of subscribing to YouTube carries important meanings to users. By subscribing to specific YouTubers, users feel like they are supporting them which they take pride of. When the YouTuber becomes more and more influential after you become a fan of him/her, users feel they have insights.
 
 YouCoin records the changes in the number of subscribers of the YouTuber after the use subscribes to him/her. YouCoin aims to activate YouTube fandom culture even more by helping users to validate their insights and choices.
 

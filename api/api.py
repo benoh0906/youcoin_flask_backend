@@ -6,7 +6,7 @@ from flask import Blueprint, request, jsonify, g
 from playhouse.shortcuts import model_to_dict
 
 api=Blueprint('api','api',url_prefix="/api/v1")
-key = ""
+key = 
 
 #rank Youcoin
 @api.route('/main', methods = ["GET"])
