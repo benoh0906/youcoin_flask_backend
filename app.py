@@ -11,7 +11,7 @@ PORT= 8000
 
 login_manager = LoginManager()
 
-app= Flask(__name__, static_url_path="", static_folder="static",instance_relative_config=True)
+app= Flask(__name__, static_url_path="", static_folder="static")
 
 
 app.secret_key = 'RLAKJDRANDOM STRING'
